@@ -6,13 +6,14 @@ from google.protobuf import wrappers_pb2
 client=speech.SpeechClient()
 
 # The name of the audio file to transcribe
-gcs_uri="gs://wonderful-site/audios/Sep 21, 16.01_.mp3"
+gcs_uri="gs://wonderful-site/audios/bonao_sample.wav"
+
 
 def transcribe_speech():
   audio=speech.RecognitionAudio(uri=gcs_uri)
 
   config=speech.RecognitionConfig(
-  encoding=speech.RecognitionConfig.AudioEncoding.MP3,
+  #encoding=speech.RecognitionConfig.AudioEncoding.MP3,
   sample_rate_hertz=48000,
   language_code="es-MX",
   model="default",
