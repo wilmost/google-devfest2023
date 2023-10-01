@@ -1,12 +1,15 @@
 # Import the Speech-to-Text client library
-from google.cloud import speech
+from google.cloud import speech, storage
 from google.protobuf import wrappers_pb2
+
+bucket_name = "wonderful-site"
+destination_blob_name= "transcripts/bonao_transcript"
+gcs_uri="gs://wonderful-site/audios/bonao_sample.wav"
+
+
 
 # Instantiates a client
 client=speech.SpeechClient()
-
-# The name of the audio file to transcribe
-gcs_uri="gs://wonderful-site/audios/bonao_sample.wav"
 
 
 def transcribe_speech():
@@ -28,6 +31,20 @@ def transcribe_speech():
   response=operation.result(timeout=90)
 
   for result in response.results:
+    upload_to_bucket(bucket_name,destination_blob_name, result.alternatives[0].transcript)
     print("Transcript: {}".format(result.alternatives[0].transcript))
+
+
+def upload_to_bucket(bucket_name,destination_blob_name, content): 
+    storage_client = storage.Client()
+    bucket = storage_client.get_bucket(bucket_name)
+    blob = bucket.blob(destination_blob_name)
+    blob.upload_from_string(content, content_type="text/plain")
+
+  
+  
+  
+  
+  
 
 transcribe_speech()
