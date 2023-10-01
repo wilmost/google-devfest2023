@@ -1,7 +1,11 @@
 import openai
 import os
 import datetime
+from google.cloud import storage
 
+bucket_name = "wonderful-site"
+destination_blob_name= "summaries/bonao-summary"
+file_content= "gs://wonderful-site/transcripts/bonao_transcript"
 openai.api_key =os.getenv("OPENAI_API_KEY")
  #os.getenv("OPENAI_API_KEY")
 
@@ -22,7 +26,15 @@ def file_generator(file_name,file_content):
     with open(file_name, 'w') as file:
         file.write(file_content)
     return
+  
     
+def upload_to_bucket(bucket_name,destination_blob_name, content): 
+    
+    storage_client = storage.Client()
+    bucket = storage_client.get_bucket(bucket_name)
+    blob = bucket.blob(destination_blob_name)
+    blob.upload_from_string(content, content_type="text/plain")
+
 
 
 
@@ -31,7 +43,5 @@ formatted_date = current_date.strftime("%Y-%m-%d")
 filename = f"summary_{formatted_date}.txt"
 
 
-with open("output1", 'r') as file:
-     file_content = file.read()
 
-file_generator(filename,summary_openai(file_content))
+upload_to_bucket(bucket_name, destination_blob_name, summary_openai(file_content))
