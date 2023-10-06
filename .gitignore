@@ -263,6 +263,7 @@ celerybeat.pid
 env/
 venv/
 ENV/
+dev-env/
 env.bak/
 venv.bak/
 pythonenv*
