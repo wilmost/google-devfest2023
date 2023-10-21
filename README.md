@@ -26,7 +26,7 @@ This project represents my attempt to create a serverless summary generator appl
 
 ## Services
 
-1. transcribe service  
+1. transcription service  
 
 ![transcription-architecture-diagram](assets/app-overview-Transcribing-service.drawio.png)
 
